@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx_flutter/stores/pagehome_store.dart';
 
 class HomePage extends StatelessWidget {
+  final PageHomeStore pagehomeStore = PageHomeStore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,8 +19,7 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14)
-              ),
+                  borderRadius: BorderRadius.circular(18)),
               elevation: 8,
               margin: EdgeInsets.symmetric(horizontal: 28),
               child: Padding(
@@ -33,13 +36,20 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                          ),
+                          hintText: 'Exemplo: fulano@gmail.com',
+                          isDense: true,
+                          errorText: pagehomeStore.emailError,
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: pagehomeStore.setEmail,
+                      );
+                    }),
                     SizedBox(height: 12),
                     Text(
                       'Senha',
@@ -50,13 +60,20 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                      ),
-                      obscureText: true,
-                    ),
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                          ),
+                          isDense: true,
+                          hintText: 'w23ead',
+                          errorText: pagehomeStore.passwordError,
+                        ),
+                        obscureText: true,
+                        onChanged: pagehomeStore.setPassword,
+                      );
+                    }),
                   ],
                 ),
               ),
